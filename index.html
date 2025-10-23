@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SimZilla</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div id="drag-region"></div>
+  <!-- Vänster sidebar -->
+  <div id="sidebar" class="glass open">
+    <div class="toolbar">
+      <button id="back"   title="Bakåt">◀</button>
+      <button id="forward" title="Framåt">▶</button>
+      <button id="reload" title="Ladda om">⟳</button>
+    </div>
+    <div class="address-bar">
+      <input id="address" placeholder="Search or enter address" />
+      <button id="newtab" title="Ny flik">＋</button>
+    </div>
+    <div id="tabs"></div>
+  </div>
+
+<!-- Huvud-yta för webviews -->
+<div id="webview-container"></div>
+
+
+  <!-- Trigger-zon för att väcka sidebaren -->
+  <div id="edge"></div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

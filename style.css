@@ -1,0 +1,247 @@
+:root {
+  --bg: 20 20 28;
+  --fg: 235 235 240;
+  --accent: 138 180 248;
+  --radius: 14px;
+  --transition: 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font: 14px/1.4 "Inter", system-ui, sans-serif;
+  background: radial-gradient(1200px 800px at 20% -10%, rgba(120, 90, 255, 0.15), transparent 60%),
+              radial-gradient(900px 600px at 90% 10%, rgba(255, 120, 170, 0.1), transparent 60%),
+              rgb(var(--bg));
+  color: rgb(var(--fg));
+}
+
+/* Sidebar glassy look */
+.glass {
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  background: rgba(var(--bg), 0.6);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform var(--transition), width var(--transition);
+}
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 260px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform: translateX(0);
+  z-index: 100;
+  padding-top: env(titlebar-area-height, 40px);
+}
+
+#sidebar:not(.open) {
+  transform: translateX(-240px);
+  width: 20px;
+}
+
+#edge {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  background: transparent;
+  z-index: 200;
+}
+
+#webview-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 260px;
+  transition: left var(--transition);
+}
+
+#sidebar:not(.open) ~ #webview-container {
+  left: 20px;
+}
+
+/* Viktigt: webview ska fylla hela containern */
+#webview-container webview {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: #1a1a1a !important;
+}
+
+
+
+.toolbar {
+  display: flex;
+  gap: 6px;
+}
+
+.toolbar button,
+#newtab {
+  border: none;
+  border-radius: 10px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgb(var(--fg));
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toolbar button:hover,
+#newtab:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.toolbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.address-bar {
+  display: flex;
+  gap: 8px;
+}
+
+#address {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgb(var(--fg));
+  outline: none;
+  transition: background 0.2s;
+}
+
+#address:focus {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+#tabs {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+#tabs::-webkit-scrollbar {
+  width: 6px;
+}
+
+#tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#tabs::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+#tabs::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tab.active {
+  background: rgba(255, 255, 255, 0.10);
+  outline: 2px solid rgba(138, 180, 248, 0.4);
+  outline-offset: -1px;
+}
+
+.tab img {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.tab span {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
+
+.tab .x {
+  opacity: 0.6;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.tab .x:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+/* Force all layout containers to 100% height */
+html, body, #webview-container, webview {
+  height: 100%;
+  width: 100%;
+}
+
+/* Ensure internal webview iframe stretches */
+webview {
+  display: flex !important;
+  flex: 1 1 auto !important;
+}
+
+webview::part(inner-contents),
+webview iframe {
+  height: 100% !important;
+  width: 100% !important;
+  border: none !important;
+  flex: 1 1 auto !important;
+}
+
+#drag-region {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5vh; /* 5% av höjden */
+  -webkit-app-region: drag;
+  z-index: 9999;
+  background: transparent;
+}
+
